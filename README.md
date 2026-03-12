@@ -30,6 +30,13 @@ Then open http://localhost:3000
 
 For local dev, the Express server uses SQLite. For Vercel, the serverless API uses Upstash Redis.
 
+## Authorization API
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/auth/generate` | POST | Exchange a Roblox cookie for an Adurite auth token. Body: `{ "cookie": "..." }` |
+| `/api/auth/validate` | POST/GET | Check if an Adurite token is valid. Body: `{ "token": "..." }` or `Authorization: Bearer <token>` |
+
 ## Tech Stack
 
 - **Local:** Node.js, Express, sql.js (SQLite)
