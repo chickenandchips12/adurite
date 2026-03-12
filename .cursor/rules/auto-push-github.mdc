@@ -1,0 +1,14 @@
+---
+description: Auto-push to GitHub after edits
+alwaysApply: true
+---
+
+# Auto Push to GitHub
+
+After making any edits to this project, always run a git commit and push to GitHub without being asked.
+
+1. Stage changes: `git add .`
+2. Commit with a descriptive message summarizing the changes
+3. Push: `git push`
+
+Skip only if there are no changes to commit.

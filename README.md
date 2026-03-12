@@ -1,41 +1,61 @@
-# Adurite — The #1 Gaming Item Marketplace
+# Adurite — Roblox Limiteds Marketplace
 
-A modern remake of [adurite.com](https://adurite.com/), the Roblox limited item marketplace.
+A player-to-player marketplace where Roblox users connect their accounts and sell their limited items.
 
 ## Features
 
-- **Hero section** — Bold headline with trust stats (4.2 rating, 1,204 reviews)
-- **Recently sold ticker** — Animated marquee of live sales
-- **Giveaway** — Countdown timer and entry CTA
-- **Marketplace** — Filterable item grid (price, payment, sort)
-- **Responsive** — Mobile-first design with collapsible nav
+- **Connect Roblox account** — Paste your `.ROBLOSECURITY` cookie to verify and link your account
+- **View your limiteds** — Fetches your collectible inventory from Roblox
+- **List items for sale** — Set your price in USD and list any limited
+- **Browse marketplace** — See all listings from real players with filters and sorting
+- **My Listings** — Manage and remove your active listings
+
+## How to Connect
+
+1. Log into [roblox.com](https://www.roblox.com)
+2. Open DevTools (F12) → **Application** → **Cookies** → roblox.com
+3. Copy the value of `.ROBLOSECURITY`
+4. Click **Connect Roblox** and paste it
+
+> ⚠️ **Security:** Never share your cookie. We use it only to verify your account and fetch your inventory. We never store it.
 
 ## Tech Stack
 
-- Vanilla HTML, CSS, JavaScript
-- No build step — open `index.html` or use a local server
+- **Backend:** Node.js, Express, sql.js (SQLite)
+- **Frontend:** Vanilla HTML, CSS, JavaScript
+- **APIs:** Roblox (users.roblox.com, inventory.roblox.com)
 
 ## Run Locally
 
 ```bash
-# Option 1: Open directly
-start index.html
-
-# Option 2: With a local server (recommended)
-npx serve .
-# or
-python -m http.server 8000
+npm install
+npm start
 ```
 
-Then visit `http://localhost:3000` (or 8000).
+Then open http://localhost:3000
 
 ## Project Structure
 
 ```
 adurite/
-├── index.html    # Main page
-├── styles.css    # All styles
-├── data.js       # Item data & formatters
-├── app.js        # Filters, countdown, rendering
-└── README.md
+├── server.js      # Express API + Roblox integration
+├── index.html     # Main page
+├── styles.css     # Styles
+├── app.js         # Frontend logic
+├── utils.js       # Helpers (formatRap, formatPrice)
+├── data.db        # SQLite DB (created on first run)
+└── package.json
 ```
+
+## API Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | /api/auth/connect | Connect with Roblox cookie |
+| GET | /api/auth/me | Current user |
+| POST | /api/auth/logout | Log out |
+| GET | /api/users/me/inventory | My limiteds (from Roblox) |
+| POST | /api/listings | Create listing |
+| GET | /api/listings | All listings (with filters) |
+| GET | /api/listings/mine | My listings |
+| DELETE | /api/listings/:id | Remove listing |
