@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adurite — The #1 Gaming Item Marketplace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <a href="/" class="logo">
+        <span class="logo-icon">◆</span>
+        <span class="logo-text">Adurite</span>
+      </a>
+      <nav class="nav">
+        <a href="#marketplace" class="nav-link">Marketplace</a>
+        <a href="#giveaway" class="nav-link">Giveaway</a>
+        <a href="https://discord.gg/adu" class="nav-link nav-link--discord" target="_blank" rel="noopener">Discord</a>
+        <button class="btn btn--primary btn--sm">Log in</button>
+      </nav>
+      <button class="mobile-menu-btn" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-bg">
+        <div class="hero-grid"></div>
+        <div class="hero-glow"></div>
+      </div>
+      <div class="hero-content">
+        <p class="hero-badge">Trusted by 50,000+ traders</p>
+        <h1 class="hero-title">
+          The #1 Gaming Item<br>
+          <span class="hero-title-accent">Marketplace</span>
+        </h1>
+        <p class="hero-subtitle">Buy and sell Roblox limiteds safely. Instant delivery. Secure payments.</p>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <span class="hero-stat-value">4.2</span>
+            <span class="hero-stat-label">Rating</span>
+          </div>
+          <div class="hero-stat-divider"></div>
+          <div class="hero-stat">
+            <span class="hero-stat-value">1,204</span>
+            <span class="hero-stat-label">Reviews</span>
+          </div>
+          <div class="hero-stat-divider"></div>
+          <div class="hero-stat">
+            <span class="hero-stat-value">$2M+</span>
+            <span class="hero-stat-label">Traded</span>
+          </div>
+        </div>
+        <div class="hero-actions">
+          <a href="#marketplace" class="btn btn--primary btn--lg">Browse Items</a>
+          <a href="#giveaway" class="btn btn--ghost btn--lg">Enter Giveaway</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="recently-sold" id="recently-sold">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Recently Sold</h2>
+          <p class="section-subtitle">Live sales from our marketplace</p>
+        </div>
+        <div class="sold-ticker">
+          <div class="sold-ticker-track">
+            <div class="sold-item" data-price="534.24">Black Iron Horns</div>
+            <div class="sold-item" data-price="34.37">Holly Jolly Bow Tie</div>
+            <div class="sold-item" data-price="10.43">Xenotargeting Oculus</div>
+            <div class="sold-item" data-price="204.58">Supa Dupa Fly Cap</div>
+            <div class="sold-item" data-price="59.01">8-Bit Tabby Cat</div>
+            <div class="sold-item" data-price="60.42">Black Iron Antlers</div>
+            <div class="sold-item" data-price="180.20">Purple Bubble Trouble</div>
+            <div class="sold-item" data-price="127.20">8-Bit Royal Crown</div>
+            <div class="sold-item" data-price="18.48">Perfectly Legitimate Business Hat</div>
+            <div class="sold-item" data-price="125.08">8-Bit Royal Crown</div>
+            <div class="sold-item" data-price="15.48">Bighead</div>
+            <div class="sold-item" data-price="59.36">Black Iron Antlers</div>
+            <div class="sold-item" data-price="39.89">Silverthorn Antlers</div>
+            <div class="sold-item" data-price="45.58">Gold Clockwork Headphones</div>
+            <div class="sold-item" data-price="31.10">Chartreuse Periastron Crown</div>
+            <!-- Duplicate for seamless loop -->
+            <div class="sold-item" data-price="534.24">Black Iron Horns</div>
+            <div class="sold-item" data-price="34.37">Holly Jolly Bow Tie</div>
+            <div class="sold-item" data-price="10.43">Xenotargeting Oculus</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="giveaway" id="giveaway">
+      <div class="container">
+        <div class="giveaway-card">
+          <div class="giveaway-badge">GIVEAWAY</div>
+          <div class="giveaway-content">
+            <div class="giveaway-item">
+              <div class="giveaway-item-icon">◆</div>
+              <h3 class="giveaway-item-name">Black Iron Horns</h3>
+              <p class="giveaway-entries"><span id="giveaway-entries">2,981</span> Entries</p>
+            </div>
+            <div class="giveaway-countdown">
+              <div class="countdown-unit">
+                <span class="countdown-value" id="days">55</span>
+                <span class="countdown-label">Days</span>
+              </div>
+              <div class="countdown-unit">
+                <span class="countdown-value" id="hours">11</span>
+                <span class="countdown-label">Hours</span>
+              </div>
+              <div class="countdown-unit">
+                <span class="countdown-value" id="minutes">48</span>
+                <span class="countdown-label">Minutes</span>
+              </div>
+              <div class="countdown-unit">
+                <span class="countdown-value" id="seconds">38</span>
+                <span class="countdown-label">Seconds</span>
+              </div>
+            </div>
+            <button class="btn btn--primary btn--lg btn--glow">Enter Giveaway</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="marketplace" id="marketplace">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Marketplace</h2>
+          <p class="section-subtitle">Browse limited items • Instant delivery</p>
+        </div>
+
+        <div class="filters">
+          <div class="filter-group">
+            <label class="filter-label">Price</label>
+            <input type="range" class="filter-range" min="0" max="50000" value="50000" id="price-range">
+            <span class="filter-value" id="price-display">$0 - $50,000</span>
+          </div>
+          <div class="filter-group">
+            <label class="filter-label">Payment</label>
+            <select class="filter-select" id="payment-filter">
+              <option value="all">All</option>
+              <option value="paypal">PayPal</option>
+              <option value="card">Card</option>
+              <option value="apple">Apple Pay</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label class="filter-label">Sort</label>
+            <select class="filter-select" id="sort-filter">
+              <option value="rap-high">RAP (High to Low)</option>
+              <option value="rap-low">RAP (Low to High)</option>
+              <option value="price-high">Price (High to Low)</option>
+              <option value="price-low">Price (Low to High)</option>
+              <option value="rate">Rate (Low to High)</option>
+            </select>
+          </div>
+          <button class="btn btn--ghost btn--sm" id="reset-filters">Reset</button>
+        </div>
+
+        <div class="items-grid" id="items-grid">
+          <!-- Items populated by JS -->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <a href="/" class="logo">
+          <span class="logo-icon">◆</span>
+          <span class="logo-text">Adurite</span>
+        </a>
+        <div class="footer-links">
+          <a href="#">Terms</a>
+          <a href="#">Privacy</a>
+          <a href="https://discord.gg/adu" target="_blank" rel="noopener">Discord</a>
+        </div>
+        <p class="footer-copy">© 2025 Adurite. The #1 Gaming Item Marketplace.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
