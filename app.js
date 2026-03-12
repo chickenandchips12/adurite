@@ -7,7 +7,7 @@ let selectedInventoryItem = null;
 
 document.addEventListener("DOMContentLoaded", async () => {
   await checkServer();
-  initAuth();
+  await initAuth(); // Must complete before UI so we know auth state
   initMobileMenu();
   initConnectModal();
   initListModal();
@@ -53,6 +53,13 @@ async function initAuth() {
     const res = await fetch(`${API}/auth/me`, { credentials: "include" });
     const data = await res.json();
     currentUser = data.user;
+    // Retry once if null - cookie might not be sent on first request (browser quirk)
+    if (!currentUser) {
+      await new Promise((r) => setTimeout(r, 300));
+      const retry = await fetch(`${API}/auth/me`, { credentials: "include" });
+      const retryData = await retry.json();
+      currentUser = retryData.user;
+    }
     updateAuthUI();
     if (currentUser) loadMyListings();
   } catch {
@@ -66,16 +73,31 @@ function updateAuthUI() {
   const userDisplayName = document.getElementById("user-display-name");
   const navSell = document.getElementById("nav-sell");
   const navDashboard = document.getElementById("nav-dashboard");
+  const sellCta = document.getElementById("sell-cta");
+  const inventorySection = document.getElementById("inventory-section");
 
   if (currentUser) {
     btnLogin.style.display = "none";
     userMenu.style.display = "flex";
     userDisplayName.textContent = currentUser.displayName || currentUser.username;
     navDashboard.style.display = "";
+    // Hide connect prompts, show inventory when on sell section
+    if (sellCta) sellCta.style.display = "none";
+    if (inventorySection && window.location.hash === "#sell") {
+      inventorySection.style.display = "block";
+      loadInventory();
+    }
+    // Update hero when logged in
+    const heroSubtitle = document.getElementById("hero-subtitle");
+    if (heroSubtitle) heroSubtitle.textContent = `Welcome back, ${currentUser.displayName || currentUser.username}. List your limiteds or browse the marketplace.`;
   } else {
     btnLogin.style.display = "";
     userMenu.style.display = "none";
     navDashboard.style.display = "none";
+    if (sellCta) sellCta.style.display = "block";
+    if (inventorySection) inventorySection.style.display = "none";
+    const heroSubtitle = document.getElementById("hero-subtitle");
+    if (heroSubtitle) heroSubtitle.textContent = "Connect your Roblox account and list your limited items for sale. Real players, real items.";
   }
 }
 
