@@ -91,7 +91,7 @@ function updateAuthUI() {
     const heroSubtitle = document.getElementById("hero-subtitle");
     if (heroSubtitle) heroSubtitle.textContent = `Welcome back, ${currentUser.displayName || currentUser.username}. List your limiteds or browse the marketplace.`;
   } else {
-    btnLogin.style.display = "";
+    btnLogin.style.display = "inline-flex";
     userMenu.style.display = "none";
     navDashboard.style.display = "none";
     if (sellCta) sellCta.style.display = "block";
