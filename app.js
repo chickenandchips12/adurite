@@ -5,15 +5,26 @@ const API = "/api";
 let currentUser = null;
 let selectedInventoryItem = null;
 
+const LOADING_MIN_MS = 500; // Minimum time loading screen stays visible
+
 document.addEventListener("DOMContentLoaded", async () => {
+  const loadingStart = Date.now();
+
   await checkServer();
-  await initAuth(); // Must complete before UI so we know auth state
+  await initAuth();
   initMobileMenu();
   initConnectModal();
   initListModal();
   initFilters();
   initSellFlow();
   loadListings();
+
+  // Keep loading screen up for minimum duration so auth processes in background
+  const elapsed = Date.now() - loadingStart;
+  const remaining = Math.max(0, LOADING_MIN_MS - elapsed);
+  await new Promise((r) => setTimeout(r, remaining));
+
+  document.getElementById("loading-screen").classList.add("loading-screen--hidden");
 
   window.addEventListener("hashchange", () => {
     if (window.location.hash === "#sell" && currentUser) loadInventory();
