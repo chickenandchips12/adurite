@@ -31,9 +31,15 @@ async function checkServer() {
 }
 
 function showServerWarning() {
+  const isVercel = window.location.hostname.includes("vercel.app");
   const banner = document.createElement("div");
   banner.className = "server-warning";
-  banner.innerHTML = `
+  banner.innerHTML = isVercel
+    ? `
+    <strong>API not responding.</strong> Make sure Upstash Redis and JWT_SECRET are configured in Vercel.
+    <button class="server-warning-close" aria-label="Dismiss">&times;</button>
+  `
+    : `
     <strong>API server not running.</strong> Run <code>npm start</code> in the project folder, then open <code>http://localhost:3000</code>
     <button class="server-warning-close" aria-label="Dismiss">&times;</button>
   `;

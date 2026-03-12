@@ -10,20 +10,14 @@ A player-to-player marketplace where Roblox users connect their accounts and sel
 - **Browse marketplace** — See all listings from real players with filters and sorting
 - **My Listings** — Manage and remove your active listings
 
-## How to Connect
+## Deploy to Vercel
 
-1. Log into [roblox.com](https://www.roblox.com)
-2. Open DevTools (F12) → **Application** → **Cookies** → roblox.com
-3. Copy the value of `.ROBLOSECURITY`
-4. Click **Connect Roblox** and paste it
+1. Push to GitHub and import the repo in [Vercel](https://vercel.com)
+2. Add **Upstash Redis** from [Vercel Marketplace](https://vercel.com/marketplace) (Storage → Redis)
+3. Add environment variable: `JWT_SECRET` (any random string for signing auth tokens)
+4. Deploy
 
-> ⚠️ **Security:** Never share your cookie. We use it only to verify your account and fetch your inventory. We never store it.
-
-## Tech Stack
-
-- **Backend:** Node.js, Express, sql.js (SQLite)
-- **Frontend:** Vanilla HTML, CSS, JavaScript
-- **APIs:** Roblox (users.roblox.com, inventory.roblox.com)
+The Upstash integration adds `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` automatically.
 
 ## Run Locally
 
@@ -34,28 +28,10 @@ npm start
 
 Then open http://localhost:3000
 
-## Project Structure
+For local dev, the Express server uses SQLite. For Vercel, the serverless API uses Upstash Redis.
 
-```
-adurite/
-├── server.js      # Express API + Roblox integration
-├── index.html     # Main page
-├── styles.css     # Styles
-├── app.js         # Frontend logic
-├── utils.js       # Helpers (formatRap, formatPrice)
-├── data.db        # SQLite DB (created on first run)
-└── package.json
-```
+## Tech Stack
 
-## API Endpoints
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | /api/auth/connect | Connect with Roblox cookie |
-| GET | /api/auth/me | Current user |
-| POST | /api/auth/logout | Log out |
-| GET | /api/users/me/inventory | My limiteds (from Roblox) |
-| POST | /api/listings | Create listing |
-| GET | /api/listings | All listings (with filters) |
-| GET | /api/listings/mine | My listings |
-| DELETE | /api/listings/:id | Remove listing |
+- **Local:** Node.js, Express, sql.js (SQLite)
+- **Vercel:** Serverless functions, Upstash Redis, JWT auth
+- **Frontend:** Vanilla HTML, CSS, JavaScript
