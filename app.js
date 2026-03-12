@@ -96,7 +96,12 @@ function initConnectModal() {
         body: JSON.stringify({ cookie }),
       });
 
-      const data = await res.json();
+      let data;
+      try {
+        data = await res.json();
+      } catch {
+        throw new Error("Server error. Please try again.");
+      }
 
       if (!res.ok) {
         throw new Error(data.error || "Failed to connect");

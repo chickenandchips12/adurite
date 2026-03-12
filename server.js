@@ -101,27 +101,63 @@ app.use(
 app.use(express.static(path.join(__dirname)));
 
 // Roblox API helpers
+const ROBLOX_HEADERS = {
+  "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+  "Accept": "application/json",
+};
+
 async function validateRobloxCookie(cookie) {
   const cleanCookie = typeof cookie === "string" ? cookie.trim() : "";
   if (!cleanCookie) throw new Error("Cookie is required");
 
+  // Strip _|WARNING:... if user pasted the full cookie value
+  const cookieValue = cleanCookie.includes("_|WARNING:")
+    ? cleanCookie.split("_|WARNING:")[0].trim()
+    : cleanCookie;
+
   const res = await fetch("https://users.roblox.com/v1/users/authenticated", {
-    headers: { Cookie: `.ROBLOSECURITY=${cleanCookie}` },
+    headers: {
+      ...ROBLOX_HEADERS,
+      Cookie: `.ROBLOSECURITY=${cookieValue}`,
+    },
   });
 
-  if (!res.ok) {
-    if (res.status === 401) throw new Error("Invalid or expired cookie");
-    throw new Error("Failed to validate with Roblox");
+  const contentType = res.headers.get("content-type") || "";
+  const text = await res.text();
+
+  if (!contentType.includes("application/json")) {
+    if (res.status === 401) throw new Error("Invalid or expired cookie. Get a fresh cookie from Roblox.");
+    throw new Error("Roblox returned an error. Try again in a few minutes.");
   }
 
-  const user = await res.json();
+  let user;
+  try {
+    user = JSON.parse(text);
+  } catch {
+    throw new Error("Invalid or expired cookie. Make sure you copied the full .ROBLOSECURITY value.");
+  }
+
+  if (!res.ok) {
+    if (res.status === 401) throw new Error("Invalid or expired cookie. Get a fresh cookie from Roblox.");
+    throw new Error(user?.errors?.[0]?.message || "Failed to validate with Roblox");
+  }
+
+  if (!user?.id) throw new Error("Invalid response from Roblox. Try again.");
+
   return user;
 }
 
 async function fetchUserDetails(userId) {
-  const res = await fetch(`https://users.roblox.com/v1/users/${userId}`);
+  const res = await fetch(`https://users.roblox.com/v1/users/${userId}`, {
+    headers: ROBLOX_HEADERS,
+  });
   if (!res.ok) return null;
-  return res.json();
+  const text = await res.text();
+  try {
+    return JSON.parse(text);
+  } catch {
+    return null;
+  }
 }
 
 async function fetchUserInventory(userId) {
@@ -134,10 +170,16 @@ async function fetchUserInventory(userId) {
     url.searchParams.set("sortOrder", "Desc");
     if (cursor) url.searchParams.set("cursor", cursor);
 
-    const res = await fetch(url.toString());
+    const res = await fetch(url.toString(), { headers: ROBLOX_HEADERS });
     if (!res.ok) throw new Error("Failed to fetch inventory");
 
-    const data = await res.json();
+    const text = await res.text();
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch {
+      throw new Error("Failed to load inventory. Try again later.");
+    }
     items.push(...(data.data || []));
     cursor = data.nextPageCursor || null;
   } while (cursor);
@@ -154,7 +196,7 @@ function requireAuth(req, res, next) {
 }
 
 // API: Connect Roblox account
-app.post("/api/auth/connect", async (req, res) => {
+app.post("/api/auth/connect", async (req, res, next) => {
   try {
     const { cookie } = req.body;
     const robloxUser = await validateRobloxCookie(cookie);
@@ -309,6 +351,15 @@ app.delete("/api/listings/:id", requireAuth, (req, res) => {
 // SPA fallback
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
+});
+
+// API error handler - ensure JSON for uncaught errors
+app.use((err, req, res, next) => {
+  if (req.path.startsWith("/api")) {
+    console.error(err);
+    return res.status(500).json({ error: err.message || "Something went wrong" });
+  }
+  next(err);
 });
 
 initDb().then(() => {
