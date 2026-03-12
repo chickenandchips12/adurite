@@ -932,6 +932,42 @@ body {
   color: var(--text-muted);
 }
 
+.server-warning {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+  padding: var(--space-md) var(--space-lg);
+  background: var(--warning);
+  color: var(--bg-primary);
+  font-size: 0.9rem;
+}
+
+.server-warning code {
+  background: rgba(0,0,0,0.2);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+}
+
+.server-warning-close {
+  position: absolute;
+  right: var(--space-md);
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.server-warning-close:hover {
+  opacity: 1;
+}
+
 /* ============================================
    Responsive
    ============================================ */

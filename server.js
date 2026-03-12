@@ -97,9 +97,6 @@ app.use(
   })
 );
 
-// Static files
-app.use(express.static(path.join(__dirname)));
-
 // Roblox API helpers
 const ROBLOX_HEADERS = {
   "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
@@ -347,6 +344,14 @@ app.delete("/api/listings/:id", requireAuth, (req, res) => {
   db.run("DELETE FROM listings WHERE id = ?", [id]);
   res.json({ ok: true });
 });
+
+// Health check (so we can detect if API server is running)
+app.get("/api/health", (req, res) => {
+  res.json({ ok: true });
+});
+
+// Static files (must be after API routes)
+app.use(express.static(path.join(__dirname)));
 
 // SPA fallback
 app.get("*", (req, res) => {

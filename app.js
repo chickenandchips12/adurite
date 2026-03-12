@@ -5,7 +5,8 @@ const API = "/api";
 let currentUser = null;
 let selectedInventoryItem = null;
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+  await checkServer();
   initAuth();
   initMobileMenu();
   initConnectModal();
@@ -19,6 +20,26 @@ document.addEventListener("DOMContentLoaded", () => {
     if (window.location.hash === "#dashboard" && currentUser) loadMyListings();
   });
 });
+
+async function checkServer() {
+  try {
+    const res = await fetch(`${API}/health`);
+    if (!res.ok) throw new Error("Not OK");
+  } catch {
+    showServerWarning();
+  }
+}
+
+function showServerWarning() {
+  const banner = document.createElement("div");
+  banner.className = "server-warning";
+  banner.innerHTML = `
+    <strong>API server not running.</strong> Run <code>npm start</code> in the project folder, then open <code>http://localhost:3000</code>
+    <button class="server-warning-close" aria-label="Dismiss">&times;</button>
+  `;
+  banner.querySelector(".server-warning-close").onclick = () => banner.remove();
+  document.body.prepend(banner);
+}
 
 // Auth
 async function initAuth() {
@@ -100,6 +121,9 @@ function initConnectModal() {
       try {
         data = await res.json();
       } catch {
+        if (res.status === 404) {
+          throw new Error("API server not running. Run 'npm start' and open http://localhost:3000");
+        }
         throw new Error("Server error. Please try again.");
       }
 
